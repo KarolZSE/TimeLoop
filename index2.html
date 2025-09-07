@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The time game</title>
+</head>
+<style>
+    #player {
+        width: 44px;
+        height: 50px;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    #enemy1 {
+        width: 44px;
+        height: 50px;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<body>
+    <div id="player">
+        <img src="spaceship.png" width="100%" height="100%">
+    </div>
+    <div id="enemy1">
+        <img src="enemy1.png" width="100%" height="100%">
+    </div>
+</body>
+<script>
+    const div = document.getElementById("player");
+    const rect = div.getBoundingClientRect();
+    console.log("cordinate:", rect.left, rect.top)
+
+let keys = {
+  a: false,
+  s: false,
+};
+
+addEventListener("keydown", (event) => {
+    left = parseInt(window.getComputedStyle(player).getPropertyValue("left"))
+    topo = parseInt(window.getComputedStyle(player).getPropertyValue("top"))
+    console.log(topo)
+    speed = 5
+    if (event.key === "a" || event.key === "A") {
+        keys.a = true;
+        div.style.left = left - speed + 'px';
+    }
+    if (event.key === "w" || event.key === "W") {
+        keys.w = true;
+        div.style.top = topo - speed + 'px';
+    }
+    if (event.key === "d" || event.key === "D") {
+        keys.a = true;
+        div.style.left = left + speed + 'px';
+    }
+    if (event.key === "s" || event.key === "S") {
+        keys.w = true;
+        div.style.top = topo + speed + 'px';
+    }
+
+    if(keys.a && keys.w){
+        div.style.left = left - speed + 'px';
+        div.style.top = topo - speed + 'px';
+    }
+
+    });
+
+addEventListener("keyup", (event) => {
+  if (event.key === "a") {
+    keys.a = false;
+  }
+  if (event.key === "s") {
+    keys.w = false;
+  }
+});
+</script>
