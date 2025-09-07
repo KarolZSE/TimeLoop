@@ -21,7 +21,7 @@ var b = 0;
 var FirstLoop = 0;
 var c = 1;
 var temporary = 0;
-let textInput = "Player";
+let textInput = "";
 let keyisdown = 0;
 let first_time = 0;
 let eventlevel = 0;
@@ -31,18 +31,25 @@ var eon = "Stable";
 class PauseScene extends Phaser.Scene {
     constructor() {
         super("PauseScene");
+        this.video
     }
 
     preload(){
+        this.load.video("bg", "background.mp4", "loadeddata", false, true) // Image by freepik
         this.load.image("tile", "tile.png")
     }
 
     create() {
+        this.video = this.add.video(this.cameras.main.centerX, this.cameras.main.centerY, "bg")
+        this.video.setDisplaySize(300, 300);
+        this.video.play(true);
+        this.video.setDepth(-1);
+        this.video.setTint(0x424242);
         this.add.image(this.cameras.main.centerX - 200, this.cameras.main.centerY - 300, "tile").setOrigin(0,0).setScale(1.5);
         const Start = this.add.text(this.cameras.main.centerX - 130, this.cameras.main.centerY + 150, 'Continue...', { fontFamily: 'PressStart2P', fontSize: '22px', fontStyle: 'normal', color: '#2d4ee0ff'});
         if (eventlevel == 0) {
-            this.add.text(20, 150, "Pilot you have \na new mission! \nYour target? \nEliminate all \nof the red \nplanes. How to \ndo it? You just \nhave to cut \ntheir trail in \na specified \namount of time, \nbut be careful \nyou will lose \nif they cut \nyours. That's \nall. Be brave! \nYou know what \nthey say the \nbiggest enemy \nis your past!", { fontFamily: 'PressStart2P', fontSize: '19px', fontStyle: 'normal', color: '#ffffffff'});
-            this.add.text(700, 150, "Pilot you have \na new mission! \nYour target? \nEliminate all \nof the red \nplanes. How to \ndo it? You just \nhave to cut \ntheir trail in \na specified \namount of time, \nbut be careful \nyou will lose \nif they cut \nyours. That's \nall. Be brave! \nYou know what \nthey say the \nbiggest enemy \nis your past!", { fontFamily: 'PressStart2P', fontSize: '19px', fontStyle: 'normal', color: '#ffffffff'});
+            this.add.text(20, 150, "Pilot you have \na new mission! \nYour target? \nEliminate all \nof the red \nplanes. How to \ndo it? You just \nhave to cut \ntheir trail in \na specified \namount of time, \nbut be careful \nyou will lose \nif they cut \nyours. That's \nall. Be brave! \nYou know what \nthey say the \nbiggest enemy \nis your past!", { fontFamily: 'PressStart2P', fontSize: '19px', fontStyle: 'normal', color: '#d8d8d8ff'});
+            this.add.text(700, 150, "Pilot you have \na new mission! \nYour target? \nEliminate all \nof the red \nplanes. How to \ndo it? You just \nhave to cut \ntheir trail in \na specified \namount of time, \nbut be careful \nyou will lose \nif they cut \nyours. That's \nall. Be brave! \nYou know what \nthey say the \nbiggest enemy \nis your past!", { fontFamily: 'PressStart2P', fontSize: '19px', fontStyle: 'normal', color: '#d8d8d8ff'});
             this.add.text(this.cameras.main.centerX - 120, this.cameras.main.centerY - 200, 'TimeLoop \n Aircrafts', { fontFamily: 'PressStart2P', fontSize: '22px', fontStyle: 'normal', color: '#000000ff'});
             this.Texto = this.add.text(this.cameras.main.centerX - 120, this.cameras.main.centerY, 'Whats your \n  name?', { fontFamily: 'PressStart2P', fontSize: '22px', fontStyle: 'normal', color: '#000000ff'});
         }
@@ -51,14 +58,14 @@ class PauseScene extends Phaser.Scene {
             this.add.text(this.cameras.main.centerX - 130, this.cameras.main.centerY - 100, (` You completed \n this mission \nin ${(movementData[session[session.length - 1] - 1].t - movementData[session[session.length - 2]].t).toFixed(0)} ms. So\nyou will recive \nthe same amount \n  of time for \n  this mision`), { fontFamily: 'PressStart2P', fontSize: '16px', fontStyle: 'normal', color: '#000000ff'});
         }
         if (eventlevel == 2) {
-            this.add.text(this.cameras.main.centerX - 130, this.cameras.main.centerY - 200, 'Oh no! You died \n The enemy has\n destroyed you!', { fontFamily: 'PressStart2P', fontSize: '16px', fontStyle: 'normal', color: '#0f7929ff'});
+            this.add.text(this.cameras.main.centerX - 130, this.cameras.main.centerY - 200, 'Oh no! You died \n The enemy has\n destroyed you!', { fontFamily: 'PressStart2P', fontSize: '16px', fontStyle: 'normal', color: '#c41818ff'});
             this.add.text(this.cameras.main.centerX - 130, this.cameras.main.centerY - 100, (`You made it to \nthe round ${s1 - 1}.You \nwill respawn on \nthe first round.`), { fontFamily: 'PressStart2P', fontSize: '16px', fontStyle: 'normal', color: '#000000ff'});
             this.add.text(this.cameras.main.centerX - 130, this.cameras.main.centerY, (`For stable game: \nReload the page \nExperimental:If \nyou want to \ncontinue the \ngame from round \n1 click Continue`), { fontFamily: 'PressStart2P', fontSize: '16px', fontStyle: 'normal', color: '#000000ff'});
             eon = "Expe";
         }
 
         if (eventlevel == 3) {
-            this.add.text(this.cameras.main.centerX - 130, this.cameras.main.centerY - 200, 'Oh no! You died \n Your time has\n    ran out!', { fontFamily: 'PressStart2P', fontSize: '16px', fontStyle: 'normal', color: '#0f7929ff'});
+            this.add.text(this.cameras.main.centerX - 130, this.cameras.main.centerY - 200, 'Oh no! You died \n Your time has\n    ran out!', { fontFamily: 'PressStart2P', fontSize: '16px', fontStyle: 'normal', color: '#c41818ff'});
             this.add.text(this.cameras.main.centerX - 130, this.cameras.main.centerY - 100, (`You made it to \nthe round ${s1 - 1}.You \nwill respawn on \nthe first round.`), { fontFamily: 'PressStart2P', fontSize: '16px', fontStyle: 'normal', color: '#000000ff'});
             this.add.text(this.cameras.main.centerX - 130, this.cameras.main.centerY, (`For stable game: \nReload the page \nExperimental:If \nyou want to \ncontinue the \ngame from round \n1 click Continue`), { fontFamily: 'PressStart2P', fontSize: '16px', fontStyle: 'normal', color: '#000000ff'});
             eon = "Expe";
