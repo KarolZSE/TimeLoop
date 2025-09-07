@@ -6357,7 +6357,7 @@ return new `+this.key+`();
  * @author       Richard Davey <rich@phaser.io>
  * @copyright    2013-2025 Phaser Studio Inc.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
- */p.exports={Format:t(27902),Pad:t(41836),RemoveAt:t(33628),Reverse:t(27671),UppercaseFirst:t(35355),UUID:t(45650)}})},St={};function it(p){var S=St[p];if(S!==void 0)return S.exports;var t=St[p]={exports:{}};return Ct[p](t,t.exports,it),t.exports}it.g=(function(){if(typeof globalThis=="object")return globalThis;try{return this||new Function("return this")()}catch{if(typeof window=="object")return window}})();var ot=it(85454);return ot})())})(Nt)),Nt.exports}var ne=se();const It=ee(ne),Ht={height:700,width:1e3};var Tt,mt=[],ht=[0],yt=0,at=0,Gt=0,Et=0,wt=0,Bt=0;let Lt="Player",Xt=0,bt=0,Ot=0;var Dt=0,Ut="Stable";class re extends It.Scene{constructor(){super("PauseScene")}preload(){this.load.image("tile","tile.png")}create(){this.add.image(this.cameras.main.centerX-200,this.cameras.main.centerY-300,"tile").setOrigin(0,0).setScale(1.5);const ct=this.add.text(this.cameras.main.centerX-130,this.cameras.main.centerY+150,"Continue...",{fontFamily:"PressStart2P",fontSize:"22px",fontStyle:"normal",color:"#2d4ee0ff"});Ot==0&&(this.add.text(20,150,`Pilot you have 
+ */p.exports={Format:t(27902),Pad:t(41836),RemoveAt:t(33628),Reverse:t(27671),UppercaseFirst:t(35355),UUID:t(45650)}})},St={};function it(p){var S=St[p];if(S!==void 0)return S.exports;var t=St[p]={exports:{}};return Ct[p](t,t.exports,it),t.exports}it.g=(function(){if(typeof globalThis=="object")return globalThis;try{return this||new Function("return this")()}catch{if(typeof window=="object")return window}})();var ot=it(85454);return ot})())})(Nt)),Nt.exports}var ne=se();const It=ee(ne),Ht={height:700,width:1e3};var Tt,mt=[],ht=[0],yt=0,at=0,Gt=0,Et=0,wt=0,Bt=0;let Lt="",Xt=0,bt=0,Ot=0;var Dt=0,Ut="Stable";class re extends It.Scene{constructor(){super("PauseScene"),this.video}preload(){this.load.video("bg","background.mp4","loadeddata",!1,!0),this.load.image("tile","tile.png")}create(){this.video=this.add.video(this.cameras.main.centerX,this.cameras.main.centerY,"bg"),this.video.setDisplaySize(300,300),this.video.play(!0),this.video.setDepth(-1),this.video.setTint(4342338),this.add.image(this.cameras.main.centerX-200,this.cameras.main.centerY-300,"tile").setOrigin(0,0).setScale(1.5);const ct=this.add.text(this.cameras.main.centerX-130,this.cameras.main.centerY+150,"Continue...",{fontFamily:"PressStart2P",fontSize:"22px",fontStyle:"normal",color:"#2d4ee0ff"});Ot==0&&(this.add.text(20,150,`Pilot you have 
 a new mission! 
 Your target? 
 Eliminate all 
@@ -6376,7 +6376,7 @@ all. Be brave!
 You know what 
 they say the 
 biggest enemy 
-is your past!`,{fontFamily:"PressStart2P",fontSize:"19px",fontStyle:"normal",color:"#ffffffff"}),this.add.text(700,150,`Pilot you have 
+is your past!`,{fontFamily:"PressStart2P",fontSize:"19px",fontStyle:"normal",color:"#d8d8d8ff"}),this.add.text(700,150,`Pilot you have 
 a new mission! 
 Your target? 
 Eliminate all 
@@ -6395,7 +6395,7 @@ all. Be brave!
 You know what 
 they say the 
 biggest enemy 
-is your past!`,{fontFamily:"PressStart2P",fontSize:"19px",fontStyle:"normal",color:"#ffffffff"}),this.add.text(this.cameras.main.centerX-120,this.cameras.main.centerY-200,`TimeLoop 
+is your past!`,{fontFamily:"PressStart2P",fontSize:"19px",fontStyle:"normal",color:"#d8d8d8ff"}),this.add.text(this.cameras.main.centerX-120,this.cameras.main.centerY-200,`TimeLoop 
  Aircrafts`,{fontFamily:"PressStart2P",fontSize:"22px",fontStyle:"normal",color:"#000000ff"}),this.Texto=this.add.text(this.cameras.main.centerX-120,this.cameras.main.centerY,`Whats your 
   name?`,{fontFamily:"PressStart2P",fontSize:"22px",fontStyle:"normal",color:"#000000ff"})),Ot==1&&(this.add.text(this.cameras.main.centerX-130,this.cameras.main.centerY-200,`Congratulations 
  You survived!
@@ -6408,7 +6408,7 @@ the same amount
   of time for 
   this mision`,{fontFamily:"PressStart2P",fontSize:"16px",fontStyle:"normal",color:"#000000ff"})),Ot==2&&(this.add.text(this.cameras.main.centerX-130,this.cameras.main.centerY-200,`Oh no! You died 
  The enemy has
- destroyed you!`,{fontFamily:"PressStart2P",fontSize:"16px",fontStyle:"normal",color:"#0f7929ff"}),this.add.text(this.cameras.main.centerX-130,this.cameras.main.centerY-100,`You made it to 
+ destroyed you!`,{fontFamily:"PressStart2P",fontSize:"16px",fontStyle:"normal",color:"#c41818ff"}),this.add.text(this.cameras.main.centerX-130,this.cameras.main.centerY-100,`You made it to 
 the round ${Dt-1}.You 
 will respawn on 
 the first round.`,{fontFamily:"PressStart2P",fontSize:"16px",fontStyle:"normal",color:"#000000ff"}),this.add.text(this.cameras.main.centerX-130,this.cameras.main.centerY,`For stable game: 
@@ -6419,7 +6419,7 @@ continue the
 game from round 
 1 click Continue`,{fontFamily:"PressStart2P",fontSize:"16px",fontStyle:"normal",color:"#000000ff"}),Ut="Expe"),Ot==3&&(this.add.text(this.cameras.main.centerX-130,this.cameras.main.centerY-200,`Oh no! You died 
  Your time has
-    ran out!`,{fontFamily:"PressStart2P",fontSize:"16px",fontStyle:"normal",color:"#0f7929ff"}),this.add.text(this.cameras.main.centerX-130,this.cameras.main.centerY-100,`You made it to 
+    ran out!`,{fontFamily:"PressStart2P",fontSize:"16px",fontStyle:"normal",color:"#c41818ff"}),this.add.text(this.cameras.main.centerX-130,this.cameras.main.centerY-100,`You made it to 
 the round ${Dt-1}.You 
 will respawn on 
 the first round.`,{fontFamily:"PressStart2P",fontSize:"16px",fontStyle:"normal",color:"#000000ff"}),this.add.text(this.cameras.main.centerX-130,this.cameras.main.centerY,`For stable game: 
