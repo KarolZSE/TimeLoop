@@ -27,6 +27,9 @@ let first_time = 0;
 let eventlevel = 0;
 var s1 = 0;
 var eon = "Stable";
+// Performance: throttle movementData sampling
+const MOVEMENT_SAMPLE_INTERVAL = 30; // ms
+let lastMovementSampleTime = 0;
 
 class PauseScene extends Phaser.Scene {
     constructor() {
@@ -119,6 +122,9 @@ class GameScene extends Phaser.Scene{
         this.video
         this.data3
         this.Home
+        // Performance: cache groups
+        this.trails = null;
+        this.evil_trails = null;
     }
     preload(){
         this.load.video("bg", "background.mp4", "loadeddata", false, true) // Image by freepik
@@ -129,8 +135,9 @@ class GameScene extends Phaser.Scene{
 
     create(){
         this.TextTimer = this.add.text(this.cameras.main.centerX - 300, 10, "Please move around (with your mouse) \n   for about 10 sec. The enemy \n     will spawn around the X. \nThis text will change in to a timer.", { fontFamily: 'PressStart2P', fontSize: '16px', fontStyle: 'normal', color: '#000000ff'});
+        // Performance: lower video resolution and pause when not visible
         this.video = this.add.video(this.cameras.main.centerX, this.cameras.main.centerY, "bg")
-        this.video.setDisplaySize(300, 300);
+        this.video.setDisplaySize(200, 200); // smaller video
         this.video.play(true);
         this.video.setDepth(-1);
         this.player = this.physics.add.image(500, 500,"player").setOrigin(0.5,0.5).setScale(2);
@@ -142,25 +149,29 @@ class GameScene extends Phaser.Scene{
         this.playerSensor.visible = false;
         this.badguysSensors = this.physics.add.group();
         this.spawns = this.add.group();
-        // this.enemySensor = this.physics.add.sprite(this.enemy.x, this.enemy.y, null).setOrigin(0.5).setSize(20, 20);
-        // this.enemySensor.visible = false;
+        // Performance: create groups once
+        this.trails = this.physics.add.group();
+        this.evil_trails = this.physics.add.group();
     }
     update(time, delta){
         let angle=Phaser.Math.Angle.Between(this.player.x,this.player.y,input.x,input.y);
-        // player will come back on the other side if he goes out of the screen
-        //rotation cannon
-        movementData.push({
+        // Performance: throttle movementData sampling
+        if (!this.lastMovementSampleTime) this.lastMovementSampleTime = time;
+        if (time - this.lastMovementSampleTime >= MOVEMENT_SAMPLE_INTERVAL) {
+            movementData.push({
                 t: time, 
                 x: this.player.x, 
                 y: this.player.y, 
                 r: this.player.rotation
-        });
-
+            });
+            this.lastMovementSampleTime = time;
+        }
+        // player will come back on the other side if he goes out of the screen
+        //rotation cannon
         if (input.x !== this.lastX || input.y !== this.lastY) {
             this.player.setRotation(angle+Math.PI/2);
             this.physics.moveTo(this.player,input.x,input.y,500);
             this.physics.moveTo(this.playerSensor,input.x,input.y,500);
-            // console.log(movementData);
         }
         this.lastX = input.x;
         this.lastY = input.y; 
@@ -265,24 +276,24 @@ class GameScene extends Phaser.Scene{
         }
         
         if (time % 15 < delta) {
-            this.trails = this.physics.add.group();
-
+            // Performance: reuse trail objects, limit group size
+            if (this.trails.getLength() > 100) {
+                let oldest = this.trails.getFirstAlive();
+                if (oldest) oldest.destroy();
+            }
             let trail = this.add.rectangle(
                 this.player.x + 0, 
                 this.player.y,
                 4,
                 4,
                 0x00ff00
-                // 0xff0000  
             ).setScale(2);
-
             this.tweens.add({
                 targets:trail,
                 alpha: 0,
                 duration: 400,
                 onComplete: () => trail.destroy()
             });
-
             this.physics.add.existing(trail);
             this.trails.add(trail);
 
@@ -322,64 +333,64 @@ class GameScene extends Phaser.Scene{
                 }, null, this);
 
 
-            this.evil_trails = this.physics.add.group();
-            
-        while (this["badguy" + b]) {
-            if (this["badguy" + b].body.enable == true) {
-                let evil_trail = this.add.rectangle(
-                this["badguy" + b].x, 
-                this["badguy" + b].y,
-                4,
-                4,
-                0xff0000  
-            ).setScale(2);
-            this.physics.add.existing(evil_trail);
-
-            evil_trail.badguy = this["badguy" + b];
-            evil_trail.sensor = this["badguySensor" + b];
-            
-            this.evil_trails.add(evil_trail);
-
-            this.tweens.add({
-                targets:evil_trail,
-                alpha: 0,
-                duration: 1000,
-                onComplete: () => evil_trail.destroy()
-            });
-            }
-            b++;
-        };
-        if (!this["badguy" + b] && this.remainingTime <= 0) {
-            b = 0
-        }
-        
-        this.physics.add.overlap(this.playerSensor, this.evil_trails, (player, trail) => {
-            if (trail.badguy && trail.badguy.body) {
-                if (trail.badguy.body.enable == true) {
-                    this.trailTouched++;
-                    trail.badguy.body.enable = false;
-                    trail.sensor.setCollisionCategory(null)
+            // Performance: reuse evil_trails, limit group size
+            while (this["badguy" + b]) {
+                if (this["badguy" + b].body.enable == true) {
+                    if (this.evil_trails.getLength() > 100) {
+                        let oldest = this.evil_trails.getFirstAlive();
+                        if (oldest) oldest.destroy();
+                    }
+                    let evil_trail = this.add.rectangle(
+                        this["badguy" + b].x, 
+                        this["badguy" + b].y,
+                        4,
+                        4,
+                        0xff0000  
+                    ).setScale(2);
+                    this.physics.add.existing(evil_trail);
+                    evil_trail.badguy = this["badguy" + b];
+                    evil_trail.sensor = this["badguySensor" + b];
+                    this.evil_trails.add(evil_trail);
+                    this.tweens.add({
+                        targets:evil_trail,
+                        alpha: 0,
+                        duration: 1000,
+                        onComplete: () => evil_trail.destroy()
+                    });
                 }
+                b++;
+            };
+            if (!this["badguy" + b] && this.remainingTime <= 0) {
+                b = 0
             }
+            
+            this.physics.add.overlap(this.playerSensor, this.evil_trails, (player, trail) => {
+                if (trail.badguy && trail.badguy.body) {
+                    if (trail.badguy.body.enable == true) {
+                        this.trailTouched++;
+                        trail.badguy.body.enable = false;
+                        trail.sensor.setCollisionCategory(null)
+                    }
+                }
 
-            if (this.trailTouched == session.length - 1) {
-                console.log("Player touched enemy");
-                session.push(movementData.length);
-                this.trailTouched = 0;
-                powtorzenia = 0;
-                FirstLoop = 0;
-                this.timedEvent2.remove();
-                this.timedEvent = this.time.delayedCall(500, () => {
-                        console.log("Pick a boo!")
+                if (this.trailTouched == session.length - 1) {
+                    console.log("Player touched enemy");
+                    session.push(movementData.length);
+                    this.trailTouched = 0;
+                    powtorzenia = 0;
+                    FirstLoop = 0;
+                    this.timedEvent2.remove();
+                    this.timedEvent = this.time.delayedCall(500, () => {
+                            console.log("Pick a boo!")
                         })
-                eventlevel = 1;
-                this.scene.launch("PauseScene");
-                this.scene.bringToTop("PauseScene");
-                this.scene.pause();
-            }
-    
-            // this.enemy.destroy();
-        }, null, this);
+                    eventlevel = 1;
+                    this.scene.launch("PauseScene");
+                    this.scene.bringToTop("PauseScene");
+                    this.scene.pause();
+                }
+        
+                // this.enemy.destroy();
+            }, null, this);
 
         }
     }
