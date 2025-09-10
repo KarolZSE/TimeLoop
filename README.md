@@ -8,8 +8,13 @@ This game is my first project in Phaser, It was a lot of pain in my butt, The Ga
 - If the enemy goes throught your trail you lose.
 - You have a timer if it reaches 0 you also lose.
 - If you lose your score goes in to the database (leaderboard for everyone to see.)
-- So good lack and bigger scores!
+- So good luck and even bigger scores!
+
+# What's new?
+- I have addressed the performance issues. Right now, I could run it even on virtual machines, and I have fixed several bugs that were affecting stability and speed.
+- Added a function that spawns your based on the location of the enemies.
+- Various fixes around the timer.
 
 By the license agreement, I am required to inform you.
 
-- The background image wa provided by freepik.
+- The background image was provided by freepik.
