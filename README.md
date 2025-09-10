@@ -4,8 +4,8 @@ Pilot you have a new mission! Your target? Eliminate all of the red planes. How 
 This game is my first project in Phaser, It was a lot of pain in my butt, The Game still has some bugs - The continue after death button likes to make a lot off them. It took me 30+ hours, most of this time spend on recording module for enemies, I hope you will like this game.
 
 # In simple terms:
-- You have to go throught the enemy trail.
-- If the enemy goes throught your trail you lose.
+- You have to go through the enemy trail.
+- If the enemy goes through your trail you lose.
 - You have a timer if it reaches 0 you also lose.
 - If you lose your score goes in to the database (leaderboard for everyone to see.)
 - So good luck and even bigger scores!
